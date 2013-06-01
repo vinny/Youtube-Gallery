@@ -55,6 +55,7 @@ $lang = array_merge($lang, array(
 
 	'INVALID_VIDEO'			=> 'The video you selected does not exist.',
 	'VIDEO'					=> 'Videos',
+	'VIDEO_EXPLAIN'			=> 'View gallery of Youtube videos',
 	'VIEW_CAT'				=> 'View Category',
 	'VIEW_VIDEO'			=> 'View Video',
 	'VIDEO_CAT'				=> 'Category',
