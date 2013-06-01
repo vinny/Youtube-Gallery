@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--NOTICE: Please open this file in your web browser. If presented with a security warning, you may safely tell it to allow the blocked content.-->
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD.\nAlthough MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD.\nNo support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://www.phpbb.com/mods/xml/modx-1.2.6.xsd">
+	<header>
+		<meta name="generator" content="MODX file generated with PP MODX Creator by tumba25 (online version)"/>
+		<license><![CDATA[http://opensource.org/licenses/gpl-license.php GNU General Public License v2]]></license>
+		<title lang="en"><![CDATA[Youtube Videos Gallery]]></title>
+		<description lang="en"><![CDATA[This MOD adds a new page to your phpBB3, on this page is possible add YouTube videos simply by submitting the video URL and watch the videos directly on your phpBB3.]]></description>
+		<github><![CDATA[https://github.com/mvinny/Youtube-Gallery]]></github>
+		<author-group>
+			<author>
+				<realname><![CDATA[Marcus Vinicius]]></realname>
+				<username><![CDATA[_Vinny_]]></username>
+				<homepage><![CDATA[http://www.suportephpbb.com.br]]></homepage>
+				<email><![CDATA[vinny@suportephpbb.com.br]]></email>
+			</author>
+		</author-group>
+		<mod-version>1.0.0</mod-version>
+		<installation>
+			<level>easy</level>
+			<time>300</time>
+			<target-version>3.0.11</target-version>
+		</installation>
+	</header>
+	<action-group>
+		<copy>
+			<file from="root/*.*" to="*.*"/>
+		</copy>
+		<open src="includes/constants.php">
+			<edit>
+				<find><![CDATA[// Additional tables]]></find>
+				<action type="after-add"><![CDATA[define('VIDEO_TABLE',			$table_prefix . 'video');
+define('VIDEO_CAT_TABLE',		$table_prefix . 'video_cat');]]></action>
+			</edit>
+		</open>
+		<open src="includes/functions.php">
+			<edit>
+				<find><![CDATA[	// The following assigns all _common_ variables that may be used at any point in a template.]]></find>
+				<action type="before-add"><![CDATA[	$user->add_lang('mods/info_acp_video');]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[		'U_INDEX'				=> append_sid("{$phpbb_root_path}index.$phpEx"),]]></find>
+				<action type="after-add"><![CDATA[		'U_VIDEO'				=> append_sid("{$phpbb_root_path}video.$phpEx"),]]></action>
+			</edit>
+		</open>
+		<open src="styles/prosilver/template/overall_header.html">
+			<edit>
+				<find><![CDATA[				<li class="icon-faq"><a href="{U_FAQ}" title="{L_FAQ_EXPLAIN}">{L_FAQ}</a></li>]]></find>
+				<action type="before-add"><![CDATA[				<li class="icon-videos"><a href="{U_VIDEO}" title="{L_VIDEO_EXPLAIN}">{L_VIDEO}</a></li>]]></action>
+			</edit>
+		</open>
+		<open src="styles/prosilver/theme/stylesheet.css">
+			<edit>
+				<find><![CDATA[@import url("colours.css");]]></find>
+				<action type="after-add"><![CDATA[@import url("video.css");]]></action>
+			</edit>
+		</open>
+		<php-installer><![CDATA[video_install.php]]></php-installer>
+	</action-group>
+</mod>

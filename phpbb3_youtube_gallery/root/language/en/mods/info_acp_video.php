@@ -1,0 +1,138 @@
+<?php
+/**
+*
+* Video [English]
+*
+* @package language
+* @version $Id$
+* @copyright (c) 2013 Vinny
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+*
+*/
+/**
+*/
+if (!defined('IN_PHPBB'))
+{
+	exit;
+}
+
+/**
+* DO NOT CHANGE
+*/
+if (empty($lang) || !is_array($lang))
+{
+	$lang = array();
+}
+
+// DEVELOPERS PLEASE NOTE
+//
+// All language files should use UTF-8 as their encoding and the files must not contain a BOM.
+//
+// Placeholders can now contain order information, e.g. instead of
+// 'Page %s of %s' you can (and should) write 'Page %1$s of %2$s', this allows
+// translators to re-order the output of data while ensuring it remains correct
+//
+// You do not need this where single placeholders are used, e.g. 'Message %d' is fine
+// equally where a string contains only two placeholders which are used to wrap text
+// in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
+
+$lang = array_merge($lang, array(
+	'VIDEO_INDEX'			=> 'Video Gallery',
+	'VIDEO_SELECT_CAT'		=> 'Select a category',
+	'VIDEO_SUBMIT'			=> 'Post a new video',
+	'VIDEO_URL'				=> 'Enter Video URL',
+	'VIDEO_URL_EXPLAIN'		=> '',
+
+	'VIDEOS_TIP'			=> 'Help and Suggestions',
+	'VIDEOS_TIPS'			=> '
+	<ul>
+		<li>Browse to <a href="https://www.youtube.com/">Youtube.com</a>, search your favorite videos.</li>
+		<li>Copy the video URL, paste it in the field above, choose the category and submit the form.</li>
+		<li>You can use <strong>youtube.com</strong> and <strong>youtu.be</strong>, both are accepted by the MOD..</li>
+	</ul>
+	<br />
+	<strong><p>Warning: this mod isn\'t for uploading videos to Youtube!</p></strong>',
+
+	'INVALID_VIDEO'			=> 'The video you selected does not exist.',
+	'VIDEO'					=> 'Videos',
+	'VIEW_CAT'				=> 'View Category',
+	'VIEW_VIDEO'			=> 'View Video',
+	'VIDEO_CAT'				=> 'Category',
+	'VIDEO_CATS'			=> 'Categories',
+	'VIDEO_CATEGORIES'		=> 'Categories',
+	'VIDEO_CREATED'			=> 'This video has been added successfully.',
+	'VIDEO_DATE'			=> 'Date',
+	'VIDEO_DELETED'			=> 'This video has been deleted successfully.',
+	'PAGE_RETURN'			=>'%sReturn to the videos page%s',
+
+	'DELETE_VIDEO'			=> 'Are you sure you want to delete this video?',
+	'MY_VIDEOS'				=> 'View your videos',
+
+	'NEED_VIDEO_URL'		=> 'You must enter a <strong>url</strong> for this video.',
+	'NEWEST_VIDEOS'			=> 'Newest Videos',
+	'NO_VIDEOS'				=> 'This page has no videos.',
+	'NO_CATEGORIES'			=> 'This page has no categories.',
+	'SEARCH_VIDEOS'			=> 'Search Videos',
+	'TOTAL_CATEGORIES_OTHER'=> 'Total categories <strong>%d</strong>',
+	'TOTAL_CATEGORY_ZERO'	=> 'Total categories <strong>0</strong>',
+	'TOTAL_VIDEOS'			=> 'Total videos',
+	'TOTAL_VIDEOS_OTHER'	=> 'Total videos <strong>%d</strong>',
+	'TOTAL_VIDEO_ZERO'		=> 'Total videos <strong>0</strong>',
+	'USER_VIDEOS'			=> 'Search user’s videos',
+
+	// ACP
+	'ACP_VIDEO'				=> 'Video Gallery',
+	'ACP_VIDEO_EXPLAIN'		=> '',
+	'ACP_VIDEO_SETTINGS'	=> 'Video Settings',
+	'ACP_VIDEO_GENERAL_SETTINGS'	=> 'General Settings',
+	'ACP_VIDEO_ENABLE'		=> 'Enable Videos Page',
+	'ACP_VIDEO_CATEGORY'	=> 'Video Categories',
+	'ACP_VIDEO_HEIGHT'		=> 'Video Height',
+	'ACP_VIDEO_WIDTH'		=> 'Video Width',
+
+	// ACP Categories
+	'ACP_CATEGORY_CREATED'	=> 'This category has been added successfully.',
+	'ACP_CATEGORY_DELETE'	=> 'Are you sure you wish to delete this category?',
+	'ACP_CATEGORY_DELETED'	=> 'This category has been deleted successfully',
+	'ACP_CATEGORY_EDIT'		=> 'Edit category',
+	'ACP_CATEGORY_UPDATED'	=> 'This category has been updated successfully!',
+	'ACP_VIDEO_CAT_ADD'		=> 'Add New Category',
+	'ACP_VIDEO_CAT_TITLE'	=> 'Category Title',
+	'ACP_VIDEO_CAT_TITLE_EXPLAIN'	=> 'Enter the title of the category.',
+	'ACP_VIDEO_CAT_TITLE_TITLE'	=> 'You must enter a <strong>title</strong> for this category.',
+	'ACP_VIDEO_OVERVIEW'	=> 'Video Categories',
+	'ACP_VIDEO_OVERVIEW_EXPLAIN'	=> 'Here you can manage the Video Categories of your board.',
+
+	// Install
+	'INSTALL_TEST_CAT'		=> 'Uncategorized',
+	
+	// View Video
+	'FLASH_IS_OFF'			=> '[flash] is <em>OFF</em>',
+	'FLASH_IS_ON'			=> '[flash] is <em>ON</em>',
+	'VIDEO_ADD_BY'			=> 'Add by',
+	'VIDEO_BBCODE'			=> 'BBcode',
+	'VIDEO_EMBED'			=> 'Embed Video',
+	'VIDEO_LINK'			=> 'Video Link',
+	'VIDEO_LINKS'			=> 'Links',
+	'VIDEO_LINK_YOUTUBE'	=> 'Youtube Video Link',	
+
+	// Youtube video text
+	'VIDEO_AUTHOR'			=> 'Author',
+	'VIDEO_DESCRIPTION'		=> 'Description',
+	'VIDEO_DURAIION'		=> 'Duration',
+	'VIDEO_FAVORIRES'		=> 'favorite(s)',
+	'VIDEO_RATING'			=> 'Rating',
+	'VIDEO_RATINGS'			=> 'rating(s)',
+	'VIDEO_RATING_OUT_OF'	=> 'out of',	
+	'VIDEO_STATISTICS'		=> 'Statistics',
+	'VIDEO_PUBLISHED'		=> 'Published',
+	'VIDEO_TITLE'			=> 'Title',
+	'VIDEO_WATCH'			=> 'Watch on YouTube',
+	'VIDEO_VIEWS'			=> 'view(s)',
+
+	//Pagination
+	'LIST_VIDEO'			=> '1 Video',
+	'LIST_VIDEOS'			=> '%1$s Videos',
+));
+
+?>
