@@ -51,7 +51,10 @@ $lang = array_merge($lang, array(
 		<li>You can use <strong>youtube.com</strong> and <strong>youtu.be</strong>, both are accepted by the MOD..</li>
 	</ul>
 	<br />
-	<strong><p>Warning: this mod isn\'t for uploading videos to Youtube!</p></strong>',
+	<strong>Warning: this mod isn\'t for uploading videos to Youtube!</strong>',
+
+	'UNAUTHED'				=> 'You are not authorised to view this page.',
+	'VIDEO_UNAUTHED'		=> 'You are not authorised to view this video.',
 
 	'INVALID_VIDEO'			=> 'The video you selected does not exist.',
 	'VIDEO'					=> 'Videos',
@@ -119,17 +122,7 @@ $lang = array_merge($lang, array(
 
 	// Youtube video text
 	'VIDEO_AUTHOR'			=> 'Author',
-	'VIDEO_DESCRIPTION'		=> 'Description',
-	'VIDEO_DURAIION'		=> 'Duration',
-	'VIDEO_FAVORIRES'		=> 'favorite(s)',
-	'VIDEO_RATING'			=> 'Rating',
-	'VIDEO_RATINGS'			=> 'rating(s)',
-	'VIDEO_RATING_OUT_OF'	=> 'out of',	
-	'VIDEO_STATISTICS'		=> 'Statistics',
-	'VIDEO_PUBLISHED'		=> 'Published',
-	'VIDEO_TITLE'			=> 'Title',
 	'VIDEO_WATCH'			=> 'Watch on YouTube',
-	'VIDEO_VIEWS'			=> 'view(s)',
 
 	//Pagination
 	'LIST_VIDEO'			=> '1 Video',

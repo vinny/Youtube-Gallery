@@ -128,7 +128,6 @@ switch ($mode)
 		$template->assign_vars(array(
 			'S_USER_ID'				=> $user->data['user_id'],
 			'S_USERNAME'			=> $user->data['username'],
-			//'S_EDIT_VIDEO'			=> ($mode == 'edit') ? true : false,
 			'S_FORM_ENCTYPE'		=> $form_enctype,
 			'S_POST_ACTION'			=> $s_action,
 			'S_HIDDEN_FIELDS'		=> $s_hidden_fields,
@@ -209,7 +208,7 @@ switch ($mode)
 	case 'view':
 	/*if (!$auth->acl_get('u_video_view'))
 	{
-			trigger_error($user->lang['UNAUTHED']);
+			trigger_error($user->lang['VIDEO_UNAUTHED']);
 	}*/
 
 	$sql_ary = array(
@@ -230,7 +229,7 @@ switch ($mode)
 	$page_title 	= $row['video_title'];
 	$user_id 		= $row['user_id'];
 	$flash_status	= $config['allow_post_flash'] ? true : false;
-	$delete_allowed = ($user->data['is_registered'] && (/*$auth->acl_get('m_video_delete', '') || (*/$row['user_id'] == $user->data['user_id']));
+	$delete_allowed = ($auth->acl_get('a_') or $auth->acl_get('m_') || ($user->data['is_registered'] && $user->data['user_id'] == $row['user_id']));
 
 	$template->assign_block_vars('video',array(
 		'VIDEO_ID'			=> censor_text($row['video_id']),

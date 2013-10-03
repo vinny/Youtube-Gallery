@@ -1,11 +1,20 @@
 <!-- INCLUDE overall_header.html -->
 
 <!-- BEGIN video -->
-	<div class="panel">
+	<div id="p{video.VIDEO_ID}" class="post bg3">
 		<div class="inner"><span class="corners-top"><span></span></span>
 
-		<div class="content"  style="text-align: center;">
-			<h2>{video.VIDEO_TITLE}</h2>
+		<div class="postbody">
+				<!-- IF video.U_DELETE -->
+				<ul class="profile-icons">
+					<li class="delete-icon"><a href="{video.U_DELETE}" title="{L_DELETE_POST}"><span>{L_DELETE_POST}</span></a></li>
+				</ul>
+				<!-- ENDIF -->
+
+			<h3 class="first"><a href="#v{video.VIDEO_ID}">{video.VIDEO_TITLE}</a></h3>
+			<p class="author">{L_VIDEO_ADD_BY} <strong>{video.USERNAME}</strong> &raquo; {video.VIDEO_TIME}</p>
+
+			<div class="content" style="text-align: center;">
 				<div id="ytplayer"></div>
 					<script type="text/javascript">
 					// <![CDATA[
@@ -27,44 +36,9 @@
 					}
 					// ]]>
 					</script>
-		</div>
-
-		<span class="corners-bottom"><span></span></span></div>
-	</div>
-
-
-
-	<div id="p{video.VIDEO_ID}" class="post bg3">
-		<div class="inner"><span class="corners-top"><span></span></span>
-
-		<div class="postbody">
-				<!-- IF video.U_DELETE -->
-				<ul class="profile-icons">
-					<li class="delete-icon"><a href="{video.U_DELETE}" title="{L_DELETE_POST}"><span>{L_DELETE_POST}</span></a></li>
-				</ul>
-				<!-- ENDIF -->
-
-			<h3 class="first"><a href="#v{video.VIDEO_ID}">{video.VIDEO_TITLE}</a></h3>
-			<p class="author">{L_VIDEO_ADD_BY} <strong>{video.USERNAME}</strong> &raquo; {video.VIDEO_TIME}</p>
-
-			<div class="content">
-				<script type="text/javascript">
-					// Code from: http://jsfiddle.net/salman/aCd8s/
-					// <![CDATA[
-					function youtubeFeedCallback( data )
-						{
-							document.writeln( '<strong>{LA_VIDEO_TITLE}:</strong> ' + data.entry[ "title" ].$t + '<br />' );
-							document.writeln( '<strong>{LA_VIDEO_AUTHOR}:</strong> <a href="http://www.youtube.com/user/' + data.entry[ "author" ][ 0 ].name.$t + '" target="_blank"> ' + data.entry[ "author" ][ 0 ].name.$t + '</a><br />' );
-							document.writeln( '<strong>{LA_VIDEO_PUBLISHED}:</strong> ' + new Date( data.entry[ "published" ].$t.substr( 0, 4 ), data.entry[ "published" ].$t.substr( 5, 2 ) - 1, data.entry[ "published" ].$t.substr( 8, 2 ) ).toLocaleDateString( ) + '<br />' );
-							document.writeln( '<strong>{LA_VIDEO_DURAIION}:</strong> ' + Math.floor( data.entry[ "media$group" ][ "yt$duration" ].seconds / 60 ) + ':' + ( data.entry[ "media$group" ][ "yt$duration" ].seconds % 60 ) + ' (' + data.entry[ "media$group" ][ "yt$duration" ].seconds + ' {LA_SECONDS})<br />' );
-							document.writeln( '<strong>{LA_VIDEO_RATING}:</strong> ' + new Number( data.entry[ "gd$rating" ].average ).toFixed( 1 ) + ' {LA_VIDEO_RATING_OUT_OF} ' + data.entry[ "gd$rating" ].max + '; ' + data.entry[ "gd$rating" ].numRaters + ' {LA_VIDEO_RATINGS}' + '<br />' );
-							document.writeln( '<strong>{LA_VIDEO_STATISTICS}:</strong> ' + data.entry[ "yt$statistics" ].favoriteCount + ' {LA_VIDEO_FAVORIRES}; ' + data.entry[ "yt$statistics" ].viewCount + ' {LA_VIDEO_VIEWS}' + '<br />' );
-							document.writeln( '<strong>{LA_VIDEO_DESCRIPTION}:</strong> ' + data.entry[ "media$group" ][ "media$description" ].$t.replace( /\n/g, '<br />' ) + '<br />' );
-							document.writeln( '<br /><a href="' + data.entry[ "media$group" ][ "media$player" ].url + '" target="_blank"><img src="{T_THEME_PATH}/images/youtube.png" alt="{LA_VIDEO_WATCH}" /> {LA_VIDEO_WATCH}</a>' );
-						}
-					// ]]>
-				</script>
-				<script type="text/javascript" src="http://gdata.youtube.com/feeds/api/videos/{video.YOUTUBE_ID}?v=2&amp;alt=json-in-script&amp;callback=youtubeFeedCallback"></script>
+					
+					<br /><br />
+					<a href="{video.YOUTUBE_VIDEO}" onclick="this.target= '_blank';return true;"><img src="{T_THEME_PATH}/images/youtube.png" alt="{L_VIDEO_WATCH}" /> {L_VIDEO_WATCH}</a>
 			</div>
 		</div>
 
