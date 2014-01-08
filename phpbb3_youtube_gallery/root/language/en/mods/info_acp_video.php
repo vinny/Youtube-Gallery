@@ -113,7 +113,7 @@ $lang = array_merge($lang, array(
 	// View Video
 	'FLASH_IS_OFF'			=> '[flash] is <em>OFF</em>',
 	'FLASH_IS_ON'			=> '[flash] is <em>ON</em>',
-	'VIDEO_ADD_BY'			=> 'Add by',
+	'VIDEO_ADD_BY'			=> 'Added by',
 	'VIDEO_BBCODE'			=> 'BBcode',
 	'VIDEO_EMBED'			=> 'Embed Video',
 	'VIDEO_LINK'			=> 'Video Link',
