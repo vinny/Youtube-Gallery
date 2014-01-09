@@ -48,10 +48,10 @@ $lang = array_merge($lang, array(
 	<ul>
 		<li>Browse to <a href="https://www.youtube.com/">Youtube.com</a>, search your favorite videos.</li>
 		<li>Copy the video URL, paste it in the field above, choose the category and submit the form.</li>
-		<li>You can use <strong>youtube.com</strong> and <strong>youtu.be</strong>, both are accepted by the MOD..</li>
+		<li>You can use <strong>youtube.com</strong> and <strong>youtu.be</strong>, both are accepted by the MOD.</li>
 	</ul>
 	<br />
-	<strong>Warning: this mod isn\'t for uploading videos to Youtube!</strong>',
+	<strong>Warning: this page isn’t for uploading videos to Youtube!</strong>',
 
 	'UNAUTHED'				=> 'You are not authorised to view this page.',
 	'VIDEO_UNAUTHED'		=> 'You are not authorised to view this video.',
@@ -118,7 +118,8 @@ $lang = array_merge($lang, array(
 	'VIDEO_EMBED'			=> 'Embed Video',
 	'VIDEO_LINK'			=> 'Video Link',
 	'VIDEO_LINKS'			=> 'Links',
-	'VIDEO_LINK_YOUTUBE'	=> 'Youtube Video Link',	
+	'VIDEO_LINK_YOUTUBE'	=> 'Youtube Video Link',
+	'VIDEO_VIEWS'			=> 'Views',
 
 	// Youtube video text
 	'VIDEO_AUTHOR'			=> 'Author',

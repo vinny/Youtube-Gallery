@@ -3,7 +3,7 @@
  *
  * @author _Vinny_ (http://www.suportephpbb.com.br/) vinnykun@hotmail.com
  * @version $Id$
- * @copyright (c) 2013
+ * @copyright (c) 2012
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
@@ -51,6 +51,8 @@ $versions = array(
 	'1.0.0' => array(
 
       'config_add' => array(
+         array('enable_video', true),
+		 array('enable_video_share', true),
 		 array('video_width', '640'),
 		 array('video_height', '390'),
       ),
@@ -70,7 +72,7 @@ $versions = array(
 
 		// Now add the table
 		'table_add' => array(
-			array('phpbb_video', array(
+			array(VIDEO_TABLE, array(
 				'COLUMNS' => array(
 					'video_id'		=> array('UINT:11', NULL, 'auto_increment'),
 					'video_url'		=> array('VCHAR:255', ''),
@@ -83,7 +85,7 @@ $versions = array(
 				),
 				'PRIMARY_KEY'	=> 'video_id',
 			)),
-			array('phpbb_video_cat', array(
+			array(VIDEO_CAT_TABLE, array(
 				'COLUMNS' => array(
 					'video_cat_id'		=> array('UINT:11', NULL, 'auto_increment'),
 					'video_cat_title'	=> array('VCHAR:255', ''),
@@ -93,12 +95,42 @@ $versions = array(
 		),
 
 		'table_insert'	=> array(
-			array('phpbb_video_cat', array(
+			array(VIDEO_CAT_TABLE, array(
 				array(
 					'video_cat_id'		=> 1,
 					'video_cat_title'	=> 'Uncategorized',
 					),
 				)),
+		),
+
+	),
+
+	'1.0.1' => array(
+	// Lets remove a config setting
+	'config_remove' => array(
+		array('enable_video'),
+		array('enable_video_share'),
+		),
+
+	// Lets add a new column to the phpbb_videos and topics table
+		'table_column_add' => array(
+			array(VIDEO_TABLE, 'video_views', array('MTEXT_UNI', '')),
+		),
+
+		'permission_add' => array(
+			array('u_video_view_full',	true),
+			array('u_video_view',		true),
+			array('u_video_delete',		true),
+			array('u_video_post',		true),
+			),
+		'permission_set' => array(
+			array('REGISTERED', 
+				 array('u_video_view_full',
+					   'u_video_view',
+					   'u_video_post',
+				 ),
+				 'group',
+			),
 		),
 
 	),

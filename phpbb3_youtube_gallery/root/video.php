@@ -24,6 +24,11 @@ $user->session_begin();
 $auth->acl($user->data);
 $user->setup('mods/info_acp_video');
 
+if (!$auth->acl_get('u_video_view_full'))
+{
+	trigger_error($user->lang['UNAUTHED']);
+}
+
 // Initial var setup
 $video_id	= request_var('id', 0);
 $video_url = request_var('video_url', '', true);
@@ -33,6 +38,7 @@ $username = request_var('username', '', true);
 $user_id = request_var('user_id', 0);
 $youtube_id = request_var('youtube_id', '', true);
 $create_time = request_var('create_time', '');
+$video_views = request_var('video_views', 0);
 
 $sql_start = request_var('start', 0);
 $sql_limit = request_var('limit', 10);
@@ -70,6 +76,7 @@ $sql_ary = array(
 	'user_id'			=> $user_id,
 	'youtube_id'		=> $youtube_id,
 	'create_time'		=> (int) time(),
+	'video_views'		=> $video_views,
 );
 
 $error = $row = array();
@@ -84,7 +91,7 @@ $template->assign_vars(array(
 $template->assign_block_vars('navlinks', array(
 	'FORUM_NAME' 	=> ($user->lang['VIDEO_INDEX']),
 	'U_VIEW_FORUM'	=> append_sid("{$phpbb_root_path}video.$phpEx"),	
-)); 
+));
 
 switch ($mode)
 {
@@ -101,6 +108,12 @@ switch ($mode)
 		if ($user->data['user_id'] == ANONYMOUS)
 		{
 			login_box($redirect_url);
+		}
+
+		// Can post?!
+		if (!$auth->acl_get('u_video_post'))
+		{
+			trigger_error($user->lang['UNAUTHED']);
 		}
 
 		$l_title = $user->lang['VIDEO_SUBMIT'];
@@ -177,6 +190,11 @@ switch ($mode)
 
 
 	case 'delete':
+		if (!$auth->acl_get('u_video_delete'))
+		{
+			trigger_error($user->lang['UNAUTHED']);
+		}
+
 		$l_title = ($user->lang['DELETE_VIDEO']);
 
 		if (confirm_box(true))
@@ -206,10 +224,19 @@ switch ($mode)
 	break;
 
 	case 'view':
-	/*if (!$auth->acl_get('u_video_view'))
+	if (!$auth->acl_get('u_video_view'))
 	{
-			trigger_error($user->lang['VIDEO_UNAUTHED']);
-	}*/
+		trigger_error($user->lang['VIDEO_UNAUTHED']);
+	}
+
+	// Update video view... but only for humans
+	if (isset($user->data['session_page']) && !$user->data['is_bot'])
+	{
+		$sql = 'UPDATE ' . VIDEO_TABLE . '
+			SET video_views = video_views + 1
+			WHERE video_id = '.$video_id;
+		$db->sql_query($sql);
+	}
 
 	$sql_ary = array(
 		'SELECT'	=> 'v.*, u.*',
@@ -229,11 +256,12 @@ switch ($mode)
 	$page_title 	= $row['video_title'];
 	$user_id 		= $row['user_id'];
 	$flash_status	= $config['allow_post_flash'] ? true : false;
-	$delete_allowed = ($auth->acl_get('a_') or $auth->acl_get('m_') || ($user->data['is_registered'] && $user->data['user_id'] == $row['user_id']));
+	$delete_allowed = ($auth->acl_get('a_') or $auth->acl_get('m_') || ($user->data['is_registered'] && $user->data['user_id'] == $row['user_id'] && $auth->acl_get('u_video_delete')));
 
 	$template->assign_block_vars('video',array(
 		'VIDEO_ID'			=> censor_text($row['video_id']),
 		'VIDEO_TITLE'		=> censor_text($row['video_title']),
+		'VIDEO_VIEWS'		=> $row['video_views'],
 		'USERNAME'			=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 		'YOUTUBE_ID'		=> censor_text($row['youtube_id']),
 		'VIDEO_TIME'		=> $user->format_date($row['create_time']),
@@ -297,6 +325,7 @@ switch ($mode)
 			'VIDEO_TITLE'	=> $row['video_title'],
 			'VIDEO_CAT_ID'	=> $row['video_cat_id'],
 			'VIDEO_CAT_TITLE'	=> $row['video_cat_title'],
+			'VIDEO_VIEWS'	=> $row['video_views'],
 			'U_CAT'			=> append_sid("{$phpbb_root_path}video.$phpEx", 'mode=cat&amp;id=' .$row['video_cat_id']),
 			'VIDEO_TIME'	=> $user->format_date($row['create_time']),
 			'VIDEO_ID'		=> censor_text($row['video_id']),
@@ -367,6 +396,7 @@ switch ($mode)
 			'VIDEO_TITLE'	=> $row['video_title'],
 			'VIDEO_CAT_ID'	=> $row['video_cat_id'],
 			'VIDEO_CAT_TITLE'	=> $row['video_cat_title'],
+			'VIDEO_VIEWS'	=> $row['video_views'],
 			'U_CAT'			=> append_sid("{$phpbb_root_path}video.$phpEx", 'mode=cat&amp;cid=' .$row['video_cat_id']),
 			'VIDEO_TIME'	=> $user->format_date($row['create_time']),
 			'VIDEO_ID'		=> censor_text($row['video_id']),
@@ -466,6 +496,7 @@ switch ($mode)
 			'VIDEO_TITLE'	=> $row['video_title'],
 			'VIDEO_CAT_ID'	=> $row['video_cat_id'],
 			'VIDEO_CAT_TITLE'	=> $row['video_cat_title'],
+			'VIDEO_VIEWS'	=> $row['video_views'],
 			'U_CAT'			=> append_sid("{$phpbb_root_path}video.$phpEx", 'mode=cat&amp;cid=' .$row['video_cat_id']),
 			'VIDEO_TIME'	=> $user->format_date($row['create_time']),
 			'VIDEO_ID'		=> censor_text($row['video_id']),
