@@ -126,6 +126,7 @@ switch ($mode)
 
 		// List of categories
 		$sql = 'SELECT * FROM ' . VIDEO_CAT_TABLE . '
+				WHERE video_title = ' . $db->sql_escape($video_title) . '
 				ORDER BY video_cat_id DESC';
 		$result = $db->sql_query($sql);
 		
