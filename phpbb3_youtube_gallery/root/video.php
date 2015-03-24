@@ -34,6 +34,7 @@ $video_id	= request_var('id', 0);
 $video_url = request_var('video_url', '', true);
 $video_title = request_var('video_title', '', true);
 $video_cat_id = request_var('cid', 0);
+$page_title = request_var('video_title', $user->lang['TOTAL_VIDEO_ZERO'], true);
 $username = request_var('username', '', true);
 $user_id = request_var('user_id', 0);
 $youtube_id = request_var('youtube_id', '', true);
