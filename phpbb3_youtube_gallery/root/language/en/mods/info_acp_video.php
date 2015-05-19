@@ -5,7 +5,7 @@
 *
 * @package language
 * @version $Id$
-* @copyright (c) 2013 Vinny
+* @copyright (c) 2015 Vinny
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -101,7 +101,7 @@ $lang = array_merge($lang, array(
 	'ACP_VIDEO_WIDTH'		=> 'Video Width',
 	'ACP_GOOGLE_KEY'		=> 'Google Public API key',
 	'ACP_GOOGLE_KEY_EXPLAIN'=> 'In order to use Video Gallery, you must create a <strong>Google Public API key</strong>. Please, visit <a href="https://console.developers.google.com/">Google Developers Console</a> to generate the key. If you have trouble to generate your key, read the guide <a href="https://developers.google.com/console/help/new/#generatingdevkeys">Google Developers Console Help: API keys</a>. Until you set up your key, the gallery will be unavailable.',
-	'ACP_VIDEOS_PER_PAGE'	=> 'Topics per page',
+	'ACP_VIDEOS_PER_PAGE'	=> 'Videos per page',
 
 	// ACP Categories
 	'ACP_CATEGORY_CREATED'	=> 'This category has been added successfully.',
