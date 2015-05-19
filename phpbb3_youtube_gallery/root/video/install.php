@@ -3,7 +3,7 @@
  *
  * @author _Vinny_ (http://www.suportephpbb.com.br/) vinnykun@hotmail.com
  * @version $Id$
- * @copyright (c) 2012
+ * @copyright (c) 2015
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
@@ -13,7 +13,7 @@
  */
 define('UMIL_AUTO', true);
 define('IN_PHPBB', true);
-$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
+$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : '../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 
 include($phpbb_root_path . 'common.' . $phpEx);
@@ -50,12 +50,12 @@ $language_file = 'mods/info_acp_video';
 $versions = array(
 	'1.0.0' => array(
 
-      'config_add' => array(
-         array('enable_video', true),
-		 array('enable_video_share', true),
-		 array('video_width', '640'),
-		 array('video_height', '390'),
-      ),
+		'config_add' => array(
+			array('enable_video', true),
+			array('enable_video_share', true),
+			array('video_width', '640'),
+			array('video_height', '390'),
+		),
 
 		// Alright, now lets add some modules to the ACP
 		'module_add' => array(
@@ -102,7 +102,6 @@ $versions = array(
 					),
 				)),
 		),
-
 	),
 
 	'1.0.1' => array(
@@ -122,17 +121,23 @@ $versions = array(
 			array('u_video_view',		true),
 			array('u_video_delete',		true),
 			array('u_video_post',		true),
-			),
+		),
 		'permission_set' => array(
 			array('REGISTERED', 
-				 array('u_video_view_full',
-					   'u_video_view',
-					   'u_video_post',
-				 ),
-				 'group',
+				array('u_video_view_full',
+						'u_video_view',
+						'u_video_post',
+					),
+				'group',
 			),
 		),
+	),
 
+	'1.0.2' => array(
+		'config_add' => array(
+			array('google_api_key'),
+			array('videos_per_page', '10'),
+		),
 	),
 );
 
