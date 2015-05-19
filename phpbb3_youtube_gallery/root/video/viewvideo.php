@@ -56,6 +56,11 @@ if (isset($user->data['session_page']) && !$user->data['is_bot'])
 			WHERE video_id = ' . $video_id;
 	$db->sql_query($sql);
 }
+
+$template->assign_block_vars('navlinks', array(
+	'FORUM_NAME' 	=> ($user->lang['VIDEO_INDEX']),
+	'U_VIEW_FORUM'	=> append_sid("{$phpbb_root_path}video/index.$phpEx"),	
+));
 	
 $sql = 'SELECT v.*, u.*
 	FROM ' . VIDEO_TABLE . ' v, ' . USERS_TABLE . ' u

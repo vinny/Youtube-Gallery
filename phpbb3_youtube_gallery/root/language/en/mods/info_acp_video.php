@@ -5,7 +5,7 @@
 *
 * @package language
 * @version $Id$
-* @copyright (c) 2015 Vinny
+* @copyright (c) 2013 Vinny
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -87,8 +87,8 @@ $lang = array_merge($lang, array(
 	'TOTAL_VIDEOS_OTHER'	=> 'Total videos <strong>%d</strong>',
 	'TOTAL_VIDEO_ZERO'		=> 'Total videos <strong>0</strong>',
 	'USER_VIDEOS'			=> 'Search user’s videos',
-	'NO_KEY_ADMIN'				=> 'Dear board administrator, in order to use Video Gallery, you must set up a <strong>Google Public API key</strong>, go to the Administration Control Panel and follow the instructions.',
-	'NO_KEY_USER'				=> 'Dear user, the gallery is unavailable. Please come back later.',
+	'NO_KEY_ADMIN'			=> 'Dear board administrator, in order to use Video Gallery, you must set up a <strong>Google Public API key</strong>, go to the Administration Control Panel and follow the instructions.',
+	'NO_KEY_USER'			=> 'Dear user, the gallery is unavailable. Please come back later.',
 
 	// ACP
 	'ACP_VIDEO'				=> 'Video Gallery',

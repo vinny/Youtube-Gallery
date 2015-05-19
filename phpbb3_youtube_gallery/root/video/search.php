@@ -3,7 +3,7 @@
 *
 * @package phpBB3
 * @version $Id$
-* @copyright (c) 2013 Vinny
+* @copyright (c) 2015 Vinny
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -45,7 +45,7 @@ if (!$config['google_api_key'])
 $user_id = request_var('u', 0);
 
 $sql_start = request_var('start', 0);
-$sql_limit = request_var('limit', 10);
+$sql_limit = request_var('limit', $config['videos_per_page']);
 
 $search_id = request_var('search_id', '');
 
@@ -62,22 +62,17 @@ switch ($search_id)
 		'U_VIDEO_SEARCH'		=> append_sid("{$phpbb_root_path}video/search.$phpEx"),
 	));
 
-	$sql_limit = ($sql_limit > 10) ? 10 : $sql_limit;
+	$sql_limit = ($sql_limit > $config['videos_per_page']) ? $config['videos_per_page'] : $sql_limit;
 	$pagination_url = append_sid("{$phpbb_root_path}video/search.$phpEx", "search_id=ego");
 
-	$sql = 'SELECT v.*, ct.video_cat_title,ct.video_cat_id, u.username,u.user_colour,u.user_id
+	$sql = 'SELECT v.*, ct.video_cat_title, ct.video_cat_id, u.username, u.user_colour, u.user_id
 	FROM ' . VIDEO_TABLE . ' v, ' . VIDEO_CAT_TABLE . ' ct, ' . USERS_TABLE . ' u
 	WHERE u.user_id = v.user_id
 		AND ct.video_cat_id = v.video_cat_id
 		AND u.user_id = ' . (int) $user->data['user_id'] . '
 			ORDER BY v.video_id DESC';
 	$result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
-	$row = $db->sql_fetchrow($result);
-	
-	/*if (!$row)
-	{
-		trigger_error('NO_USER_VIDEOS');
-	}*/
+
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$template->assign_block_vars('video', array(
