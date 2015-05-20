@@ -74,19 +74,27 @@ $total_videos = (int) $db->sql_fetchfield('total_videos');
 $db->sql_freeresult($result);
 
 // Count the videos categories ...
-$sql = 'SELECT COUNT(video_cat_id) AS total_categories FROM ' . VIDEO_CAT_TABLE ;
+$sql = 'SELECT COUNT(video_cat_id) AS total_categories FROM ' . VIDEO_CAT_TABLE;
 $result = $db->sql_query($sql);
 $total_categories = (int) $db->sql_fetchfield('total_categories');
 $db->sql_freeresult($result);
 
+// Count the videos views ...
+$sql = 'SELECT SUM(video_views) AS total_views FROM ' . VIDEO_TABLE;
+$result = $db->sql_query($sql);
+$total_views = (int) $db->sql_fetchfield('total_views');
+$db->sql_freeresult($result);
+
 $l_total_video_s 	= ($total_videos == 0) ? 'TOTAL_VIDEO_ZERO' : 'TOTAL_VIDEOS_OTHER';
 $l_total_category_s = ($total_categories == 0) ? 'TOTAL_CATEGORY_ZERO' : 'TOTAL_CATEGORIES_OTHER';
+$l_total_view_s = ($total_views == 0) ? 'TOTAL_VIEW_ZERO' : 'TOTAL_VIEWS_OTHER';
 
 $template->assign_vars(array(
 	'U_VIDEO_SUBMIT' 	=> append_sid("{$phpbb_root_path}video/posting.$phpEx"),
 	'BUTTON_VIDEO_NEW'	=> "{$web_path}styles/" . rawurlencode($user->theme['imageset_path']) . '/imageset/' . $user->lang_name .'/button_video_new.gif',
-	'TOTAL_VIDEOS'		=> sprintf($user->lang[$l_total_video_s], $total_videos),
+	'TOTAL_VIDEOS_INDEX'=> sprintf($user->lang[$l_total_video_s], $total_videos),
 	'TOTAL_CATEGORIES'	=> sprintf($user->lang[$l_total_category_s], $total_categories),
+	'TOTAL_VIEWS'		=> sprintf($user->lang[$l_total_view_s], $total_views),
 	'U_MY_VIDEOS'		=> append_sid("{$phpbb_root_path}video/search.$phpEx", 'search_id=ego'),
 ));
 
