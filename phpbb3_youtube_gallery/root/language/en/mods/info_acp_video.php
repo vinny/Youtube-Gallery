@@ -72,7 +72,6 @@ $lang = array_merge($lang, array(
 
 	'DELETE_VIDEO_CONFIRM'	=> 'Are you sure you want to delete this video?',
 	'MY_VIDEOS'				=> 'View your videos',
-	'RETURN_TO_SEARCH_ADV' 	=> 'Return to advanced search',
 
 	'NEED_VIDEO_URL'		=> 'You must enter a <strong>url</strong> for this video.',
 	'NEWEST_VIDEOS'			=> 'Newest Videos',

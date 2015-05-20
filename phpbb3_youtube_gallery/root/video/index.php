@@ -30,16 +30,6 @@ if (!$auth->acl_get('u_video_view_full'))
 }
 
 // Initial var setup
-$video_id	= request_var('id', 0);
-$video_url = request_var('video_url', '', true);
-$video_title = request_var('video_title', '', true);
-$video_cat_id = request_var('cid', 0);
-$username = request_var('username', '', true);
-$user_id = request_var('user_id', 0);
-$youtube_id = request_var('youtube_id', '', true);
-$create_time = request_var('create_time', '');
-$video_views = request_var('video_views', 0);
-
 $sql_start = request_var('start', 0);
 $sql_limit = request_var('limit', $config['videos_per_page']);
 
@@ -52,6 +42,7 @@ $template->assign_vars(array(
 	'U_VIDEO'				=> append_sid("{$phpbb_root_path}video/index.$phpEx"),
 ));
 
+// Google API key is set up?
 if (!$config['google_api_key'])
 {	
 	if ($auth->acl_get('a_'))
@@ -96,7 +87,7 @@ $template->assign_vars(array(
 	'BUTTON_VIDEO_NEW'	=> "{$web_path}styles/" . rawurlencode($user->theme['imageset_path']) . '/imageset/' . $user->lang_name .'/button_video_new.gif',
 	'TOTAL_VIDEOS'		=> sprintf($user->lang[$l_total_video_s], $total_videos),
 	'TOTAL_CATEGORIES'	=> sprintf($user->lang[$l_total_category_s], $total_categories),
-	'U_MY_VIDEOS'		=> append_sid(generate_board_url() ."/video/search.$phpEx", 'search_id=ego'),
+	'U_MY_VIDEOS'		=> append_sid("{$phpbb_root_path}video/search.$phpEx", 'search_id=ego'),
 ));
 
 $sql_limit = ($sql_limit > $config['videos_per_page']) ? $config['videos_per_page'] : $sql_limit;

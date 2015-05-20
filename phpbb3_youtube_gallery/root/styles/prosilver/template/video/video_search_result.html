@@ -1,9 +1,6 @@
 <!-- INCLUDE overall_header.html -->
 
-<!-- IF S_SEARCH_USER_VIDEO -->
-<h2>{L_MY_VIDEOS}</h2>
-
-<p><a class="{S_CONTENT_FLOW_BEGIN}" href="{U_VIDEO_SEARCH}" title="{L_RETURN_TO_SEARCH_ADV}">{L_RETURN_TO_SEARCH_ADV}</a></p>
+<h2><!-- IF S_SEARCH_USER_VIDEO -->{L_USER_VIDEOS}<!-- ELSEIF S_SEARCH_EGO_VIDEO -->{L_MY_VIDEOS}<!-- ENDIF --></h2>
 
 <!-- IF PAGINATION or TOTAL_VIDEOS -->
 	<div class="topic-actions">
@@ -51,6 +48,5 @@
 <p></p><p><a href="{U_VIDEO}" class="left-box {S_CONTENT_FLOW_BEGIN}" accesskey="r">{L_RETURN_TO} {L_VIDEO_INDEX}</a></p>
 
 <br class="clear" />
-<!-- ENDIF -->
 
 <!-- INCLUDE overall_footer.html -->
