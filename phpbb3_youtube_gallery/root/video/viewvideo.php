@@ -99,7 +99,7 @@ $template->assign_vars(array(
 	'S_VIDEO_HEIGHT'	=> $config['video_height'],
 	'U_DELETE'			=> append_sid("{$phpbb_root_path}video/posting.$phpEx", 'mode=delete&amp;id=' . $row['video_id']),
 	'S_DELETE_ALLOWED'	=> $delete_allowed,
-	'U_USER_VIDEOS' 	=> append_sid(generate_board_url() ."/video/search.$phpEx", 'search_id=v&amp;u=' . $row['user_id']),
+	'U_USER_VIDEOS' 	=> append_sid("{$phpbb_root_path}video/search.$phpEx", 'search_id=v&amp;u=' . $row['user_id']),
 ));
 
 // Count the videos user video ...

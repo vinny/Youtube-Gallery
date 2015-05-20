@@ -55,6 +55,7 @@ $template->assign_block_vars('navlinks', array(
 
 switch ($search_id)
 {
+	default;
 	case 'ego';
 		$template->assign_vars(array(
 			'S_SEARCH_EGO_VIDEO' 	=> true,
