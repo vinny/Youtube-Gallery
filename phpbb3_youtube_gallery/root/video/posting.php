@@ -40,6 +40,11 @@ $youtube_id = request_var('youtube_id', '', true);
 $create_time = request_var('create_time', '');
 $video_views = request_var('video_views', 0);
 
+// Comments
+$cmnt_id = request_var('id', 0);
+$cmnt_video_id	= request_var('v', 0);
+$cmnt_text = utf8_normalize_nfc(request_var('cmnt_text', '', true));
+
 $mode = request_var('mode', '');
 $submit = (isset($_POST['submit'])) ? true : false;
 $cancel = (isset($_POST['cancel'])) ? true : false;
@@ -119,12 +124,136 @@ switch ($mode)
 		{
 			$db->sql_query('INSERT INTO ' . VIDEO_TABLE .' ' . $db->sql_build_array('INSERT', $sql_ary));
 			
-			$meta_info = append_sid("{$phpbb_root_path}video/index.{$phpEx}");
+			$meta_info = append_sid("{$phpbb_root_path}video/index.$phpEx");
 			$message = $user->lang['VIDEO_CREATED'];
 
 			meta_refresh(3, $meta_info);
 			$message .= '<br /><br />' . sprintf($user->lang['PAGE_RETURN'], '<a href="' . $meta_info . '">', '</a>');
 			trigger_error($message);
+		}
+	break;
+
+	case 'comment':
+		$l_title = ($user->lang['VIDEO_CMNT_SUBMIT']);
+		$template_html = 'video/video_cmnt_editor.html';
+
+		if (!$config['enable_comments'])
+		{	
+			trigger_error($user->lang['COMMENTS_DISABLED']);
+		}
+
+		// User is a bot?!
+		if ($user->data['is_bot'])
+		{
+			redirect(append_sid("{$phpbb_root_path}index.$phpEx"));
+		}
+
+		// Can post?!
+		if (!$auth->acl_get('u_video_comment'))
+		{
+			trigger_error($user->lang['UNAUTHED']);
+		}
+
+		$redirect_url = append_sid("{$phpbb_root_path}video/posting.$phpEx", 'mode=comment&amp;v=' . (int) $video_id);
+		// Is a guest?!
+		if ($user->data['user_id'] == ANONYMOUS)
+		{
+			login_box($redirect_url);
+		}
+
+		//Settings for comments
+		$user->setup('posting');
+		display_custom_bbcodes();
+		generate_smilies('inline', 0);
+
+		$bbcode_status	= ($config['allow_bbcode']) ? true : false;
+		$smilies_status	= ($config['allow_smilies']) ? true : false;
+		$img_status		= ($bbcode_status) ? true : false;
+		$url_status		= ($config['allow_post_links']) ? true : false;
+		$flash_status	= ($bbcode_status && $config['allow_post_flash']) ? true : false;
+		$quote_status	= true;
+		$video_id		= request_var('v', 0);
+		$uid = $bitfield = $options = '';
+		$allow_bbcode = $allow_urls = $allow_smilies = true; 
+		$s_action = append_sid("{$phpbb_root_path}video/posting.$phpEx", 'mode=comment&amp;v=' . (int) $video_id);
+		$s_hidden_fields = '';
+		$form_enctype = '';
+		add_form_key('postform');
+
+		// Start assigning vars for main posting page ...
+		$template->assign_vars(array(
+			'VIDEO_ID'				=> (int) $video_id,
+			'S_FORM_ENCTYPE'		=> $form_enctype,
+			'S_POST_ACTION'			=> $s_action,
+			'S_HIDDEN_FIELDS'		=> $s_hidden_fields,
+			'ERROR'					=> (sizeof($error)) ? implode('<br />', $error) : '',
+			'S_BBCODE_ALLOWED'		=> ($bbcode_status) ? 1 : 0,
+			'S_SMILIES_ALLOWED'		=> $smilies_status,
+			'S_BBCODE_IMG'			=> $img_status,
+			'S_BBCODE_URL'			=> $url_status,
+			'S_LINKS_ALLOWED'		=> $url_status,
+			'S_BBCODE_QUOTE'		=> $quote_status,
+		));
+
+		if (isset($_POST['submit']))
+		{
+			if (!check_form_key('postform'))
+			{
+				trigger_error('FORM_INVALID');
+			}
+
+			$video_id = request_var('v', 0); // Get video to redirect :D
+			$message = request_var('cmnt_text', '', true);
+			generate_text_for_storage($message, $uid, $bitfield, $options, $allow_bbcode, $allow_urls, $allow_smilies);
+			$data = array(
+				'cmnt_video_id'		=> request_var('cmnt_video_id', 0),
+				'cmnt_poster_id'	=> $user->data['user_id'],
+				'cmnt_text'			=> $message,
+				'create_time'		=> time(),
+				'bbcode_bitfield'	=> $bitfield,
+				'bbcode_uid'		=> $uid,
+			);
+			$db->sql_query('INSERT INTO ' . VIDEO_CMNTS_TABLE .' ' . $db->sql_build_array('INSERT', $data));
+			
+			$meta_info = append_sid("{$phpbb_root_path}video/viewvideo.$phpEx", 'id=' . (int) $video_id . '#comments');
+			$message = $user->lang['COMMENT_CREATED'];
+
+			meta_refresh(3, $meta_info);
+			$message .= '<br /><br />' . sprintf($user->lang['PAGE_RETURN'], '<a href="' . $meta_info . '">', '</a>');
+			trigger_error($message);
+		}
+
+		$template->assign_block_vars('navlinks', array(
+			'FORUM_NAME' 	=> ($user->lang['VIDEO_CMNT_SUBMIT']),
+		));
+	break;
+
+	case 'delcmnt':
+		if (!$auth->acl_get('u_video_comment_delete'))
+		{
+			trigger_error($user->lang['UNAUTHED']);
+		}
+
+		if (confirm_box(true))
+		{
+			$sql = 'DELETE FROM ' . VIDEO_CMNTS_TABLE . ' WHERE cmnt_id = ' . (int) $cmnt_id;
+			$db->sql_query($sql);
+
+			$meta_info = append_sid("{$phpbb_root_path}video/index.$phpEx");
+			$message = $user->lang['COMMENT_DELETED_SUCCESS'];
+			meta_refresh(3, $meta_info);
+			$message .= '<br /><br />' . sprintf($user->lang['PAGE_RETURN'], '<a href="' . $meta_info . '">', '</a>');
+			trigger_error($message);
+		}
+		else
+		{
+			$s_hidden_fields = build_hidden_fields(array(
+				'id'	 	=> $cmnt_id,
+				'mode'		=> 'delete')
+			);
+			confirm_box(false, $user->lang['DELETE_COMMENT_CONFIRM'], $s_hidden_fields);
+			$meta_info = append_sid("{$phpbb_root_path}video/viewvideo.$phpEx", 'id=' . $video_id);
+			meta_refresh(1, $meta_info);
 		}
 	break;
 
@@ -223,7 +352,6 @@ switch ($mode)
 		$template->assign_block_vars('navlinks', array(
 			'FORUM_NAME' 	=> ($user->lang['VIDEO_SUBMIT']),
 		));
-
 	break;
 }
 

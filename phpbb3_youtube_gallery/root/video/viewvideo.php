@@ -18,6 +18,7 @@ include($phpbb_root_path . 'common.' . $phpEx);
 include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 include($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
 include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+include($phpbb_root_path . 'includes/message_parser.' . $phpEx);
 
 // Start session management
 $user->session_begin();
@@ -25,6 +26,8 @@ $auth->acl($user->data);
 $user->setup('mods/info_acp_video');
 
 $video_id	= request_var('id', 0);
+$sql_start = request_var('start', 0);
+$sql_limit = request_var('limit', $config['videos_per_page']);
 
 if (!$auth->acl_get('u_video_view_full'))
 {
@@ -100,7 +103,55 @@ $template->assign_vars(array(
 	'U_DELETE'			=> append_sid("{$phpbb_root_path}video/posting.$phpEx", 'mode=delete&amp;id=' . $row['video_id']),
 	'S_DELETE_ALLOWED'	=> $delete_allowed,
 	'U_USER_VIDEOS' 	=> append_sid("{$phpbb_root_path}video/search.$phpEx", 'search_id=v&amp;u=' . $row['user_id']),
+	'U_POST_COMMENT'	=> append_sid("{$phpbb_root_path}video/posting.$phpEx", 'mode=comment&amp;v=' . $row['video_id']),
+	'S_ENABLE_COMMENTS'	=> $config['enable_comments'],
+	'S_POST_COMMENT'	=> $auth->acl_get('u_video_comment'),
 ));
+
+// Comments
+$pagination_url = append_sid("{$phpbb_root_path}video/viewvideo.$phpEx", "id=$video_id");
+
+$sql_ary = array(
+	'SELECT'	=> 'v.*, cmnt.*, u.username,u.user_colour,u.user_id',
+	'FROM'		=> array(
+		VIDEO_TABLE			=> 'v',
+		VIDEO_CMNTS_TABLE	=> 'cmnt',
+		USERS_TABLE			=> 'u',
+	),
+	'WHERE'		=> 'v.video_id = ' . (int) $video_id . ' AND cmnt.cmnt_video_id = v.video_id AND u.user_id = cmnt.cmnt_poster_id AND v.user_id = cmnt.cmnt_poster_id',
+	'ORDER_BY'	=> 'cmnt.cmnt_id DESC',
+);
+$sql = $db->sql_build_query('SELECT', $sql_ary);
+$result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
+
+while ($row = $db->sql_fetchrow($result))
+{
+	$delete_cmnt_allowed = ($auth->acl_get('a_') or $auth->acl_get('m_') || ($user->data['is_registered'] && $user->data['user_id'] == $row['user_id'] && $auth->acl_get('u_video_comment_delete')));
+	$text = generate_text_for_display($row['cmnt_text'], $row['bbcode_uid'], $row['bbcode_bitfield'], true);
+	$template->assign_block_vars('commentrow', array(
+		'COMMENT_ID'		=> $row['cmnt_id'],
+		'COMMENT_TEXT'		=> $text,
+		'COMMENT_TIME'		=> $user->format_date($row['create_time']),
+		'USERNAME'			=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
+		'S_DELETE_ALLOWED'	=> $delete_cmnt_allowed,
+		'U_DELETE'			=> append_sid("{$phpbb_root_path}video/posting.$phpEx", 'mode=delcmnt&amp;id=' . $row['cmnt_id']),
+	));
+}
+$db->sql_freeresult($result);
+
+// We need another query for the video count
+$sql = 'SELECT COUNT(*) as comment_count FROM ' . VIDEO_CMNTS_TABLE . ' WHERE cmnt_video_id = ' . (int) $video_id;
+$result = $db->sql_query($sql);
+$videorow['comment_count'] = $db->sql_fetchfield('comment_count');
+$db->sql_freeresult($result);
+
+//Start pagination
+$template->assign_vars(array(
+	'PAGINATION'		=> generate_pagination($pagination_url, $videorow['comment_count'], $sql_limit, $sql_start),
+	'PAGE_NUMBER'		=> on_page($videorow['comment_count'], $sql_limit, $sql_start),
+	'TOTAL_COMMENTS'	=> ($videorow['comment_count'] == 1) ? $user->lang['LIST_COMMENT'] : sprintf($user->lang['LIST_COMMENTS'], $videorow['comment_count']),
+));
+//End pagination
 
 // Count the videos user video ...
 $sql = 'SELECT COUNT(video_id) AS total_videos FROM ' . VIDEO_TABLE . ' WHERE user_id = ' . (int) $user_id;
@@ -110,6 +161,16 @@ $db->sql_freeresult($result);
 
 $template->assign_vars(array(
 	'TOTAL_VIDEOS'		=> $total_videos,
+));
+
+// Count the video comments ...
+$sql_cmnts = 'SELECT COUNT(cmnt_id) AS total_comments FROM ' . VIDEO_CMNTS_TABLE . ' WHERE cmnt_video_id = ' . (int) $video_id;
+$result = $db->sql_query($sql_cmnts);
+$total_comments = (int) $db->sql_fetchfield('total_comments');
+$db->sql_freeresult($result);
+
+$template->assign_vars(array(
+	'TOTAL_COMMENTS_TITLE'		=> $total_comments,
 ));
 
 $template->assign_block_vars('navlinks', array(

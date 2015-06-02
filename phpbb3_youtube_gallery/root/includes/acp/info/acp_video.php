@@ -16,7 +16,7 @@ class acp_video_info
 		return array(
 			'filename'	=> 'acp_video',
 			'title'		=> 'ACP_VIDEO',
-			'version'	=> '1.0.2',
+			'version'	=> '1.0.4',
 			'modes'		=> array(
 				'settings'			=> array('title' => 'ACP_VIDEO_SETTINGS',				'auth' => 'acl_a_board',	'cat' => array('ACP_VIDEO')),
 				'cat'				=> array('title' => 'ACP_VIDEO_CATEGORY',				'auth' => 'acl_a_board',	'cat' => array('ACP_VIDEO')),

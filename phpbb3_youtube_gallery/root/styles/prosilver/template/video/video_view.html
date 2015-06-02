@@ -6,7 +6,7 @@
 	<div class="postbody">
 		<!-- IF S_DELETE_ALLOWED -->
 			<ul class="profile-icons">
-				<li class="delete-icon"><a href="{U_DELETE}" title="{L_DELETE_POST}"><span>{L_DELETE_POST}</span></a></li>
+				<li class="delete-icon"><a href="{U_DELETE}" title="{L_DELETE_VIDEO}"><span>{L_DELETE_VIDEO}</span></a></li>
 			</ul>
 		<!-- ENDIF -->
 
@@ -44,6 +44,7 @@
 	<dl class="postprofile" id="profile{VIDEO_ID}">
 		<dd><strong>{L_VIDEO_ADD_BY}:</strong> {USERNAME} (<a href="{U_USER_VIDEOS}" title="{L_USER_VIDEOS}">{TOTAL_VIDEOS}</a>)</dd>
 		<dd><strong>{L_VIDEO_VIEWS}:</strong> {VIDEO_VIEWS}</dd>
+		<!-- IF S_ENABLE_COMMENTS --><dd><strong>{L_VIDEO_COMMENTS}:</strong> {TOTAL_COMMENTS_TITLE}</dd><!-- ENDIF -->
 	</dl>
 	<div class="back2top"><a href="#wrap" class="top" title="{L_BACK_TO_TOP}">{L_BACK_TO_TOP}</a></div>
 
@@ -77,6 +78,80 @@
 
 	<span class="corners-bottom"><span></span></span></div>
 </div>
+
+<br />
+
+<!-- IF S_ENABLE_COMMENTS -->
+<div class="topic-actions">
+
+	<div class="buttons">
+	<!-- IF not S_IS_BOT and S_POST_COMMENT -->
+		<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->reply-icon<!-- ENDIF -->"><a href="{U_POST_COMMENT}" title="<!-- IF S_IS_LOCKED -->{L_TOPIC_LOCKED}<!-- ELSE -->{L_POST_REPLY}<!-- ENDIF -->"><span></span><!-- IF S_IS_LOCKED -->{L_TOPIC_LOCKED_SHORT}<!-- ELSE -->{L_POST_REPLY}<!-- ENDIF --></a></div>
+	<!-- ENDIF -->
+	</div>
+
+	<!-- IF PAGINATION or TOTAL_COMMENTS -->
+		<div class="pagination">
+			{TOTAL_COMMENTS}
+			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+		</div>
+	<!-- ENDIF -->
+
+</div>
+<div class="clear"></div>
+<!-- IF .commentrow -->
+<a id="comments"></a>
+	<!-- BEGIN commentrow -->
+	<div id="p{commentrow.COMMENT_ID}" class="post <!-- IF commentrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF -->">
+		<div class="inner"><span class="corners-top"><span></span></span>
+
+		<div class="postbody" style="width: 98%;">
+		<!-- IF not S_IS_BOT -->
+			<!-- IF commentrow.S_DELETE_ALLOWED -->
+				<ul class="profile-icons">
+					<li class="delete-icon"><a href="{commentrow.U_DELETE}" title="{L_DELETE_COMMENT}"><span>{L_DELETE_COMMENT}</span></a></li>
+				</ul>
+			<!-- ENDIF -->
+		<!-- ENDIF -->
+
+			<h3><a href="#p{commentrow.COMMENT_ID}">{commentrow.VIDEO_TITLE}</a></h3>
+			<p class="author">{L_POST_BY_AUTHOR} <strong>{commentrow.USERNAME}</strong> &raquo; {commentrow.COMMENT_TIME} </p>
+
+			<div class="content">{commentrow.COMMENT_TEXT}</div>
+
+		</div>
+
+		<div class="back2top"><a href="#wrap" class="top" title="{L_BACK_TO_TOP}">{L_BACK_TO_TOP}</a></div>
+
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<hr class="divider" />
+	<!-- END commentrow -->
+
+<!-- ELSE -->
+	<div class="panel">
+		<div class="inner"><span class="corners-top"><span></span></span>
+		<strong>{L_NO_VIDEOS_COMMENTS}</strong>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+<!-- ENDIF -->
+
+<div class="topic-actions">
+	<div class="buttons">
+	<!-- IF not S_IS_BOT and S_POST_COMMENT -->
+		<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->reply-icon<!-- ENDIF -->"><a href="{U_POST_COMMENT}" title="<!-- IF S_IS_LOCKED -->{L_TOPIC_LOCKED}<!-- ELSE -->{L_POST_REPLY}<!-- ENDIF -->"><span></span><!-- IF S_IS_LOCKED -->{L_TOPIC_LOCKED_SHORT}<!-- ELSE -->{L_POST_REPLY}<!-- ENDIF --></a></div>
+	<!-- ENDIF -->
+	</div>
+
+	<!-- IF PAGINATION or TOTAL_COMMENTS -->
+		<div class="pagination">
+			{TOTAL_COMMENTS}
+			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+		</div>
+	<!-- ENDIF -->
+</div>
+<!-- ENDIF -->
 
 <p></p><p><a href="{U_VIDEO}" class="left-box {S_CONTENT_FLOW_BEGIN}" accesskey="r">{L_RETURN_TO} {L_VIDEO_INDEX}</a></p>
 

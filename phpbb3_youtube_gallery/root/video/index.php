@@ -85,9 +85,16 @@ $result = $db->sql_query($sql);
 $total_views = (int) $db->sql_fetchfield('total_views');
 $db->sql_freeresult($result);
 
+// Count the videos comments ...
+$sql = 'SELECT COUNT(cmnt_id) AS total_comments FROM ' . VIDEO_CMNTS_TABLE;
+$result = $db->sql_query($sql);
+$total_comments = (int) $db->sql_fetchfield('total_comments');
+$db->sql_freeresult($result);
+
 $l_total_video_s 	= ($total_videos == 0) ? 'TOTAL_VIDEO_ZERO' : 'TOTAL_VIDEOS_OTHER';
 $l_total_category_s = ($total_categories == 0) ? 'TOTAL_CATEGORY_ZERO' : 'TOTAL_CATEGORIES_OTHER';
 $l_total_view_s = ($total_views == 0) ? 'TOTAL_VIEW_ZERO' : 'TOTAL_VIEWS_OTHER';
+$l_total_comment_s = ($total_comments == 0) ? 'TOTAL_COMMENT_ZERO' : 'TOTAL_COMMENTS_OTHER';
 
 $template->assign_vars(array(
 	'U_VIDEO_SUBMIT' 	=> append_sid("{$phpbb_root_path}video/posting.$phpEx"),
@@ -95,6 +102,7 @@ $template->assign_vars(array(
 	'TOTAL_VIDEOS_INDEX'=> sprintf($user->lang[$l_total_video_s], $total_videos),
 	'TOTAL_CATEGORIES'	=> sprintf($user->lang[$l_total_category_s], $total_categories),
 	'TOTAL_VIEWS'		=> sprintf($user->lang[$l_total_view_s], $total_views),
+	'TOTAL_COMMENTS'	=> sprintf($user->lang[$l_total_comment_s], $total_comments),
 	'U_MY_VIDEOS'		=> append_sid("{$phpbb_root_path}video/search.$phpEx", 'search_id=ego'),
 ));
 

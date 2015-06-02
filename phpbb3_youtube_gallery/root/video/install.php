@@ -49,7 +49,6 @@ $language_file = 'mods/info_acp_video';
 */
 $versions = array(
 	'1.0.0' => array(
-
 		'config_add' => array(
 			array('enable_video', true),
 			array('enable_video_share', true),
@@ -137,6 +136,41 @@ $versions = array(
 		'config_add' => array(
 			array('google_api_key'),
 			array('videos_per_page', '10'),
+		),
+	),
+
+	'1.0.3' => array(
+		'config_add' => array(
+			array('enable_video_comments', true),
+			array('comments_per_page', '10'),
+		),
+
+		// Now add the table
+		'table_add' => array(
+			array(VIDEO_CMNTS_TABLE, array(
+				'COLUMNS' => array(
+					'cmnt_id'			=> array('UINT', NULL, 'auto_increment'),
+					'cmnt_video_id'		=> array('UINT', 0),
+					'cmnt_poster_id'	=> array('UINT', 0),
+					'cmnt_text'			=> array('TEXT_UNI', ''),
+					'create_time'		=> array('TIMESTAMP', 0),
+					'bbcode_uid'		=> array('VCHAR:8', ''),
+					'bbcode_bitfield'	=> array('VCHAR:255', ''),
+				),
+				'PRIMARY_KEY'	=> 'cmnt_id',
+			)),
+		),
+	),
+
+	'1.0.4' => array(
+		'config_add' => array(
+			array('enable_comments'),
+			array('comments_per_page', '10'),
+		),
+
+		'permission_add' => array(
+			array('u_video_comment',	true),
+			array('u_video_comment_delete',		true),
 		),
 	),
 );
