@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @author _Vinny_ (http://www.suportephpbb.com.br/) vinnykun@hotmail.com
+ * @author _Vinny_ (http://www.suportephpbb.com.br/)
  * @version $Id$
  * @copyright (c) 2015
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
