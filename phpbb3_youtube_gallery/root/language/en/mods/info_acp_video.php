@@ -84,6 +84,7 @@ $lang = array_merge($lang, array(
 	'DELETE_VIDEO'			=> 'Delete video',
 
 	'NEED_VIDEO_URL'		=> 'You must enter a <strong>url</strong> for this video.',
+	'NEED_VIDEO_MESSAGE'	=> 'You must enter a <strong>message</strong> for this comment.',
 	'NEWEST_VIDEOS'			=> 'Newest Videos',
 	'NO_VIDEOS'				=> 'This page has no videos.',
 	'NO_CAT_VIDEOS'			=> 'This category has no videos or does not exist.',

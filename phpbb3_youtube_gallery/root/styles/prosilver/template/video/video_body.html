@@ -1,12 +1,17 @@
 <!-- INCLUDE overall_header.html -->
 
-<!-- IF not S_IS_BOT -->
-	<div class="buttons">
-		<div class="video-icon" title="{L_VIDEO_SUBMIT}"><a href="{U_VIDEO_SUBMIT}"><span></span>{L_VIDEO_SUBMIT}</a></div>
-	</div>
-<!-- ENDIF -->
+<div class="topic-actions">
+	<!-- IF not S_IS_BOT -->
+		<div class="buttons">
+			<div class="video-icon" title="{L_VIDEO_SUBMIT}"><a href="{U_VIDEO_SUBMIT}"><span></span>{L_VIDEO_SUBMIT}</a></div>
+		</div>
+	<!-- ENDIF -->
 
-<br class="clear" />
+	<div class="pagination">
+		{TOTAL_VIDEOS}
+		<!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
+	</div>
+</div>
 
 <!-- IF .video -->
 <div id="tabs">
@@ -41,14 +46,16 @@
 <!-- ENDIF -->
 
 <div class="topic-actions">
-	<div class="buttons">
-		<!-- IF not S_IS_BOT --><div class="video-icon" title="{L_VIDEO_SUBMIT}"><a href="{U_VIDEO_SUBMIT}"><span></span>{L_VIDEO_SUBMIT}</a></div><!-- ENDIF -->
-	</div>
-
-		<div class="pagination">
-			{TOTAL_VIDEOS}
-			<!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
+	<!-- IF not S_IS_BOT -->
+		<div class="buttons">
+			<div class="video-icon" title="{L_VIDEO_SUBMIT}"><a href="{U_VIDEO_SUBMIT}"><span></span>{L_VIDEO_SUBMIT}</a></div>
 		</div>
+	<!-- ENDIF -->
+
+	<div class="pagination">
+		{TOTAL_VIDEOS}
+		<!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
+	</div>
 </div>
 
 <script type="text/javascript">

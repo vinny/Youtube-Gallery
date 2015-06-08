@@ -156,6 +156,7 @@ $versions = array(
 					'create_time'		=> array('TIMESTAMP', 0),
 					'bbcode_uid'		=> array('VCHAR:8', ''),
 					'bbcode_bitfield'	=> array('VCHAR:255', ''),
+					'bbcode_options'	=> array('UINT', 0),
 				),
 				'PRIMARY_KEY'	=> 'cmnt_id',
 			)),

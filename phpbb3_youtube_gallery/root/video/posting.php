@@ -41,7 +41,7 @@ $create_time = request_var('create_time', '');
 $video_views = request_var('video_views', 0);
 
 // Comments
-$cmnt_id = request_var('id', 0);
+$cmnt_id = request_var('cmntid', 0);
 $cmnt_video_id	= request_var('v', 0);
 $cmnt_text = utf8_normalize_nfc(request_var('cmnt_text', '', true));
 
@@ -210,19 +210,32 @@ switch ($mode)
 				'cmnt_poster_id'	=> $user->data['user_id'],
 				'cmnt_text'			=> $message,
 				'create_time'		=> time(),
-				'bbcode_bitfield'	=> $bitfield,
 				'bbcode_uid'		=> $uid,
+				'bbcode_bitfield'	=> $bitfield,
+			    'bbcode_options'    => $options,
 			);
-			$db->sql_query('INSERT INTO ' . VIDEO_CMNTS_TABLE .' ' . $db->sql_build_array('INSERT', $data));
+
+			if ($message == '')
+			{
+				$meta_info = append_sid("{$phpbb_root_path}video/posting.$phpEx", 'mode=comment&amp;v=' . (int) $video_id);
+				$message = $user->lang['NEED_VIDEO_MESSAGE'];
+
+				meta_refresh(3, $meta_info);
+				$message .= '<br /><br />' . sprintf($user->lang['PAGE_RETURN'], '<a href="' . $meta_info . '">', '</a>');
+				trigger_error($message);
+			}
+			else
+			{
+				$db->sql_query('INSERT INTO ' . VIDEO_CMNTS_TABLE .' ' . $db->sql_build_array('INSERT', $data));
 			
-			$meta_info = append_sid("{$phpbb_root_path}video/viewvideo.$phpEx", 'id=' . (int) $video_id . '#comments');
-			$message = $user->lang['COMMENT_CREATED'];
+				$meta_info = append_sid("{$phpbb_root_path}video/viewvideo.$phpEx", 'id=' . (int) $video_id . '#comments');
+				$message = $user->lang['COMMENT_CREATED'];
 
-			meta_refresh(3, $meta_info);
-			$message .= '<br /><br />' . sprintf($user->lang['PAGE_RETURN'], '<a href="' . $meta_info . '">', '</a>');
-			trigger_error($message);
+				meta_refresh(3, $meta_info);
+				$message .= '<br /><br />' . sprintf($user->lang['PAGE_RETURN'], '<a href="' . $meta_info . '">', '</a>');
+				trigger_error($message);
+			}
 		}
-
 		$template->assign_block_vars('navlinks', array(
 			'FORUM_NAME' 	=> ($user->lang['VIDEO_CMNT_SUBMIT']),
 		));
@@ -233,13 +246,14 @@ switch ($mode)
 		{
 			trigger_error($user->lang['UNAUTHED']);
 		}
+		$video_id = request_var('v', 0); // Get video to redirect :D
 
 		if (confirm_box(true))
 		{
 			$sql = 'DELETE FROM ' . VIDEO_CMNTS_TABLE . ' WHERE cmnt_id = ' . (int) $cmnt_id;
 			$db->sql_query($sql);
 
-			$meta_info = append_sid("{$phpbb_root_path}video/index.$phpEx");
+			$meta_info = append_sid("{$phpbb_root_path}video/viewvideo.$phpEx", 'id=' . (int) $video_id . '#comments');
 			$message = $user->lang['COMMENT_DELETED_SUCCESS'];
 			meta_refresh(3, $meta_info);
 			$message .= '<br /><br />' . sprintf($user->lang['PAGE_RETURN'], '<a href="' . $meta_info . '">', '</a>');
@@ -249,10 +263,10 @@ switch ($mode)
 		{
 			$s_hidden_fields = build_hidden_fields(array(
 				'id'	 	=> $cmnt_id,
-				'mode'		=> 'delete')
+				'mode'		=> 'delcmnt')
 			);
 			confirm_box(false, $user->lang['DELETE_COMMENT_CONFIRM'], $s_hidden_fields);
-			$meta_info = append_sid("{$phpbb_root_path}video/viewvideo.$phpEx", 'id=' . $video_id);
+			$meta_info = append_sid("{$phpbb_root_path}video/viewvideo.$phpEx", 'id=' . (int) $video_id . '#comments');
 			meta_refresh(1, $meta_info);
 		}
 	break;

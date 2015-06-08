@@ -27,7 +27,7 @@ $user->setup('mods/info_acp_video');
 
 $video_id	= request_var('id', 0);
 $sql_start = request_var('start', 0);
-$sql_limit = request_var('limit', $config['videos_per_page']);
+$sql_limit = request_var('limit', $config['comments_per_page']);
 
 if (!$auth->acl_get('u_video_view_full'))
 {
@@ -118,7 +118,7 @@ $sql_ary = array(
 		VIDEO_CMNTS_TABLE	=> 'cmnt',
 		USERS_TABLE			=> 'u',
 	),
-	'WHERE'		=> 'v.video_id = ' . (int) $video_id . ' AND cmnt.cmnt_video_id = v.video_id AND u.user_id = cmnt.cmnt_poster_id AND v.user_id = cmnt.cmnt_poster_id',
+	'WHERE'		=> 'v.video_id = ' . (int) $video_id . ' AND cmnt.cmnt_video_id = v.video_id AND u.user_id = cmnt.cmnt_poster_id',
 	'ORDER_BY'	=> 'cmnt.cmnt_id DESC',
 );
 $sql = $db->sql_build_query('SELECT', $sql_ary);
@@ -127,14 +127,14 @@ $result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
 while ($row = $db->sql_fetchrow($result))
 {
 	$delete_cmnt_allowed = ($auth->acl_get('a_') or $auth->acl_get('m_') || ($user->data['is_registered'] && $user->data['user_id'] == $row['user_id'] && $auth->acl_get('u_video_comment_delete')));
-	$text = generate_text_for_display($row['cmnt_text'], $row['bbcode_uid'], $row['bbcode_bitfield'], true);
+	$text = generate_text_for_display($row['cmnt_text'], $row['bbcode_uid'], $row['bbcode_bitfield'], $row['bbcode_options']);
 	$template->assign_block_vars('commentrow', array(
 		'COMMENT_ID'		=> $row['cmnt_id'],
 		'COMMENT_TEXT'		=> $text,
 		'COMMENT_TIME'		=> $user->format_date($row['create_time']),
 		'USERNAME'			=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 		'S_DELETE_ALLOWED'	=> $delete_cmnt_allowed,
-		'U_DELETE'			=> append_sid("{$phpbb_root_path}video/posting.$phpEx", 'mode=delcmnt&amp;id=' . $row['cmnt_id']),
+		'U_DELETE'			=> append_sid("{$phpbb_root_path}video/posting.$phpEx", 'mode=delcmnt&amp;cmntid=' . (int) $row['cmnt_id'] . '&amp;v=' . (int) $row['cmnt_video_id']),
 	));
 }
 $db->sql_freeresult($result);

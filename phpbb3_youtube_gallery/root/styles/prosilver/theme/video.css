@@ -22,10 +22,6 @@ h3.center {
 .video-icon span	{ background: url("{T_IMAGESET_LANG_PATH}/button_video_new.gif") 0 0 no-repeat; }
 .buttons div.video-icon		{ width: 96px; height: 25px; }
 
-/*
-.videocmnt-icon span	{ background: url("{T_IMAGESET_LANG_PATH}/button_video_cmnt.gif") 0 0 no-repeat; }
-.buttons div.videocmnt-icon		{ width: 96px; height: 25px; }*/
-
 .rtl .icon-videos {
 	background-position: 100% 50%;
 	padding: 1px 17px 0 0;
