@@ -58,6 +58,6 @@ define('VIDEO_CMNTS_TABLE',		$table_prefix . 'video_cmnts');]]></action>
 				<action type="after-add"><![CDATA[@import url("video.css");]]></action>
 			</edit>
 		</open>
-		<php-installer><![CDATA[video_install.php]]></php-installer>
+		<php-installer><![CDATA[video/install.php]]></php-installer>
 	</action-group>
 </mod>
