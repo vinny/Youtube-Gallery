@@ -170,8 +170,8 @@ $versions = array(
 		),
 
 		'permission_add' => array(
-			array('u_video_comment',	true),
-			array('u_video_comment_delete',		true),
+			array('u_video_comment', true),
+			array('u_video_comment_delete',	true),
 		),
 	),
 );
