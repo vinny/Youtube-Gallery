@@ -33,5 +33,7 @@ $lang = array_merge($lang, array(
 	'acl_u_video_view'		=> array('lang'	=> 'Can view videos',			'cat' => 'video'),
 	'acl_u_video_delete'	=> array('lang' => 'Can delete own videos',		'cat' => 'video'),
 	'acl_u_video_post'		=> array('lang'	=> 'Can post videos',			'cat' => 'video'),
+	'acl_u_video_comment'	=> array('lang'	=> 'Can post comments',			'cat' => 'video'),
+	'acl_u_video_comment_delete'	=> array('lang' => 'Can delete own comments',		'cat' => 'video'),
 ));
 ?>

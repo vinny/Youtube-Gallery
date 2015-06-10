@@ -17,11 +17,11 @@
 				<email><![CDATA[vinny@suportephpbb.com.br]]></email>
 			</author>
 		</author-group>
-		<mod-version>1.0.1</mod-version>
+		<mod-version>1.0.4</mod-version>
 		<installation>
 			<level>easy</level>
 			<time>300</time>
-			<target-version>3.0.12</target-version>
+			<target-version>3.0.14</target-version>
 		</installation>
 	</header>
 	<action-group>
@@ -32,7 +32,8 @@
 			<edit>
 				<find><![CDATA[// Additional tables]]></find>
 				<action type="after-add"><![CDATA[define('VIDEO_TABLE',			$table_prefix . 'video');
-define('VIDEO_CAT_TABLE',		$table_prefix . 'video_cat');]]></action>
+define('VIDEO_CAT_TABLE',		$table_prefix . 'video_cat');
+define('VIDEO_CMNTS_TABLE',		$table_prefix . 'video_cmnts');]]></action>
 			</edit>
 		</open>
 		<open src="includes/functions.php">
@@ -42,7 +43,7 @@ define('VIDEO_CAT_TABLE',		$table_prefix . 'video_cat');]]></action>
 			</edit>
 			<edit>
 				<find><![CDATA[		'U_INDEX'				=> append_sid("{$phpbb_root_path}index.$phpEx"),]]></find>
-				<action type="after-add"><![CDATA[		'U_VIDEO'				=> append_sid("{$phpbb_root_path}video.$phpEx"),]]></action>
+				<action type="after-add"><![CDATA[		'U_VIDEO'				=> append_sid("{$phpbb_root_path}video/index.$phpEx"),]]></action>
 			</edit>
 		</open>
 		<open src="styles/prosilver/template/overall_header.html">
@@ -57,6 +58,6 @@ define('VIDEO_CAT_TABLE',		$table_prefix . 'video_cat');]]></action>
 				<action type="after-add"><![CDATA[@import url("video.css");]]></action>
 			</edit>
 		</open>
-		<php-installer><![CDATA[video_install.php]]></php-installer>
+		<php-installer><![CDATA[video/install.php]]></php-installer>
 	</action-group>
 </mod>

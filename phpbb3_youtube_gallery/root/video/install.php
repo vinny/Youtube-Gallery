@@ -1,9 +1,9 @@
 <?php
 /**
  *
- * @author _Vinny_ (http://www.suportephpbb.com.br/) vinnykun@hotmail.com
+ * @author _Vinny_ (http://www.suportephpbb.com.br/)
  * @version $Id$
- * @copyright (c) 2012
+ * @copyright (c) 2015
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  *
  */
@@ -13,7 +13,7 @@
  */
 define('UMIL_AUTO', true);
 define('IN_PHPBB', true);
-$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
+$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : '../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 
 include($phpbb_root_path . 'common.' . $phpEx);
@@ -49,13 +49,12 @@ $language_file = 'mods/info_acp_video';
 */
 $versions = array(
 	'1.0.0' => array(
-
-      'config_add' => array(
-         array('enable_video', true),
-		 array('enable_video_share', true),
-		 array('video_width', '640'),
-		 array('video_height', '390'),
-      ),
+		'config_add' => array(
+			array('enable_video', true),
+			array('enable_video_share', true),
+			array('video_width', '640'),
+			array('video_height', '390'),
+		),
 
 		// Alright, now lets add some modules to the ACP
 		'module_add' => array(
@@ -102,7 +101,6 @@ $versions = array(
 					),
 				)),
 		),
-
 	),
 
 	'1.0.1' => array(
@@ -122,17 +120,59 @@ $versions = array(
 			array('u_video_view',		true),
 			array('u_video_delete',		true),
 			array('u_video_post',		true),
-			),
+		),
 		'permission_set' => array(
 			array('REGISTERED', 
-				 array('u_video_view_full',
-					   'u_video_view',
-					   'u_video_post',
-				 ),
-				 'group',
+				array('u_video_view_full',
+						'u_video_view',
+						'u_video_post',
+					),
+				'group',
 			),
 		),
+	),
 
+	'1.0.2' => array(
+		'config_add' => array(
+			array('google_api_key'),
+			array('videos_per_page', '10'),
+		),
+	),
+
+	'1.0.3' => array(
+		'config_add' => array(
+			array('enable_video_comments', true),
+			array('comments_per_page', '10'),
+		),
+
+		// Now add the table
+		'table_add' => array(
+			array(VIDEO_CMNTS_TABLE, array(
+				'COLUMNS' => array(
+					'cmnt_id'			=> array('UINT', NULL, 'auto_increment'),
+					'cmnt_video_id'		=> array('UINT', 0),
+					'cmnt_poster_id'	=> array('UINT', 0),
+					'cmnt_text'			=> array('TEXT_UNI', ''),
+					'create_time'		=> array('TIMESTAMP', 0),
+					'bbcode_uid'		=> array('VCHAR:8', ''),
+					'bbcode_bitfield'	=> array('VCHAR:255', ''),
+					'bbcode_options'	=> array('UINT', 0),
+				),
+				'PRIMARY_KEY'	=> 'cmnt_id',
+			)),
+		),
+	),
+
+	'1.0.4' => array(
+		'config_add' => array(
+			array('enable_comments'),
+			array('comments_per_page', '10'),
+		),
+
+		'permission_add' => array(
+			array('u_video_comment', true),
+			array('u_video_comment_delete',	true),
+		),
 	),
 );
 

@@ -42,8 +42,12 @@ class acp_video
 						'legend1'				=> 'ACP_VIDEO_GENERAL_SETTINGS',
 						'video_width'				=> array('lang' => 'ACP_VIDEO_WIDTH',	'validate' => 'string',	'type' => 'text:4:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']),
 						'video_height'				=> array('lang' => 'ACP_VIDEO_HEIGHT',	'validate' => 'string',	'type' => 'text:4:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']),
+						'videos_per_page'			=> array('lang' => 'ACP_VIDEOS_PER_PAGE',	'validate' => 'int:1',	'type' => 'text:3:4', 'explain' => false),
+						'google_api_key'			=> array('lang' => 'ACP_GOOGLE_KEY',	'validate' => 'string',	'type' => 'text:40:255', 'explain' => true),
+						'enable_comments'			=> array('lang' => 'ACP_ENABLE_COMMENTS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
+						'comments_per_page'			=> array('lang' => 'ACP_COMMENTS_PER_PAGE',	'validate' => 'int:1',	'type' => 'text:3:4', 'explain' => false),
 
-						'legend5'					=> 'ACP_SUBMIT_CHANGES',
+						'legend2'					=> 'ACP_SUBMIT_CHANGES',
 					)
 				);
 			$this->page_title = 'ACP_VIDEO';
@@ -91,7 +95,7 @@ class acp_video
 						'S_LEGEND'		=> true,
 						'LEGEND'		=> (isset($user->lang[$vars])) ? $user->lang[$vars] : $vars)
 					);
-	
+
 					continue;
 				}
 				$type = explode(':', $vars['type']);
@@ -121,62 +125,60 @@ class acp_video
 			}
 		break;
 
+		case 'cat':
+			$user->add_lang(array('posting'));
+			$this->tpl_name = 'acp_video_cat';
+			$this->page_title = 'ACP_VIDEO_CATEGORY';
 
-			case 'cat':
-				$user->add_lang(array('posting'));
-				$this->tpl_name = 'acp_video_cat';
-				$this->page_title = 'ACP_VIDEO_CATEGORY';
-
-				$form_key = 'acp_video_cat';
-				add_form_key($form_key);
+			$form_key = 'acp_video_cat';
+			add_form_key($form_key);
 				
-				include ($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+			include ($phpbb_root_path . 'includes/functions_user.' . $phpEx);
 
-				$form_action = $this->u_action. '&amp;action=add';
-				$user->add_lang('mods/info_acp_video');
-				$lang_mode		= $user->lang['ACP_VIDEO_CATEGORY'];
-				$video_cat_id 	= request_var('video_cat_id', 0);
-				$video_cat_title = request_var('video_cat_title', '', true);
-				$action		= (isset($_POST['add'])) ? 'add' : ((isset($_POST['delete'])) ? 'delete' : request_var('action', ''));
+			$form_action = $this->u_action. '&amp;action=add';
+			$user->add_lang('mods/info_acp_video');
+			$lang_mode		= $user->lang['ACP_VIDEO_CATEGORY'];
+			$video_cat_id 	= request_var('video_cat_id', 0);
+			$video_cat_title = request_var('video_cat_title', '', true);
+			$action		= (isset($_POST['add'])) ? 'add' : ((isset($_POST['delete'])) ? 'delete' : request_var('action', ''));
 
-				//Make SQL Array
-				$sql_ary = array(
-					'video_cat_id'				=> $video_cat_id,
-					'video_cat_title'			=> $video_cat_title,
-				);
+			//Make SQL Array
+			$sql_ary = array(
+				'video_cat_id'				=> $video_cat_id,
+				'video_cat_title'			=> $video_cat_title,
+			);
 				
-				switch ($action)
+			switch ($action)
+			{
+				case 'add':
+				if ($video_cat_title == '')
 				{
-					case 'add':
-					if ($video_cat_title == '')
-					{
-						trigger_error($user->lang['ACP_VIDEO_CAT_TITLE_TITLE'] . adm_back_link($this->u_action), E_USER_WARNING);
-					}
-					else
-					{
-						$db->sql_query('INSERT INTO ' . VIDEO_CAT_TABLE .' ' . $db->sql_build_array('INSERT', $sql_ary));
-						trigger_error($user->lang['ACP_CATEGORY_CREATED'] . adm_back_link($this->u_action));
-					}
-					break;
+					trigger_error($user->lang['ACP_VIDEO_CAT_TITLE_TITLE'] . adm_back_link($this->u_action), E_USER_WARNING);
+				}
+				else
+				{
+					$db->sql_query('INSERT INTO ' . VIDEO_CAT_TABLE .' ' . $db->sql_build_array('INSERT', $sql_ary));
+					trigger_error($user->lang['ACP_CATEGORY_CREATED'] . adm_back_link($this->u_action));
+				}
+				break;
 
-					case 'edit':
-						$form_action = $this->u_action. '&amp;action=update';
-						$lang_mode = $user->lang['ACP_CATEGORY_EDIT'];
-						$sql = 'SELECT *
-							FROM ' . VIDEO_CAT_TABLE . ' 
-							WHERE video_cat_id = '.(int)$_GET['id'];
-						$result = $db->sql_query_limit($sql,1);
-						$row = $db->sql_fetchrow($result);
-		 
-						$template->assign_vars(array(
-							'S_EDIT_MODE'		=> true,
-							'VIDEO_CAT_ID'		=> $row['video_cat_id'],
-							'VIDEO_CAT_TITLE'	=> $row['video_cat_title'],
-							));
-					break;
+				case 'edit':
+					$form_action = $this->u_action. '&amp;action=update';
+					$lang_mode = $user->lang['ACP_CATEGORY_EDIT'];
+					$sql = 'SELECT *
+						FROM ' . VIDEO_CAT_TABLE . ' 
+						WHERE video_cat_id = '.(int)$_GET['id'];
+					$result = $db->sql_query_limit($sql,1);
+					$row = $db->sql_fetchrow($result);
 
-					case 'update':
-					
+					$template->assign_vars(array(
+						'S_EDIT_MODE'		=> true,
+						'VIDEO_CAT_ID'		=> $row['video_cat_id'],
+						'VIDEO_CAT_TITLE'	=> $row['video_cat_title'],
+						));
+				break;
+
+				case 'update':
 					if ($video_cat_title == '')
 					{
 						trigger_error($user->lang['ACP_VIDEO_CAT_TITLE_TITLE'] . adm_back_link($this->u_action), E_USER_WARNING);
@@ -188,53 +190,51 @@ class acp_video
 					}
 					break;
 
-					case 'delete':
-						if (confirm_box(true))
-						{
-							$sql = 'DELETE FROM ' . VIDEO_CAT_TABLE . '
-								WHERE video_cat_id = '.(int)$_GET['id'];
-							$db->sql_query($sql);
-							trigger_error($user->lang['ACP_CATEGORY_DELETED'] . adm_back_link($this->u_action));
-						}
-						else
-						{
-							confirm_box(false, $user->lang['ACP_CATEGORY_DELETE'], build_hidden_fields(array(
-								'video_cat_id'		=> $video_cat_id,
-								'action'			=> 'delete',
-							)));
-						}
-					break;
-				}
+				case 'delete':
+					if (confirm_box(true))
+					{
+						$sql = 'DELETE FROM ' . VIDEO_CAT_TABLE . '
+							WHERE video_cat_id = '.(int)$_GET['id'];
+						$db->sql_query($sql);
+						trigger_error($user->lang['ACP_CATEGORY_DELETED'] . adm_back_link($this->u_action));
+					}
+					else
+					{
+						confirm_box(false, $user->lang['ACP_CATEGORY_DELETE'], build_hidden_fields(array(
+							'video_cat_id'		=> $video_cat_id,
+							'action'			=> 'delete',
+						)));
+					}
+				break;
+			}
 
-				//
-				// Start output the page
-				//
-				$sql = 'SELECT *
-					FROM ' . VIDEO_CAT_TABLE . ' 
-					ORDER by video_cat_id';
-				$result = $db->sql_query($sql);
-				while ($row = $db->sql_fetchrow($result))
-				{
-					$template->assign_block_vars('category', array(
-						'VIDEO_CAT_TITLE'	=> $row['video_cat_title'],
-						'U_EDIT'			=> $this->u_action . '&amp;action=edit&amp;id=' .$row['video_cat_id'],
-						'U_DEL'				=> $this->u_action . '&amp;action=delete&amp;id=' .$row['video_cat_id'],
+		//
+		// Start output the page
+		//
+		$sql = 'SELECT *
+			FROM ' . VIDEO_CAT_TABLE . ' 
+			ORDER by video_cat_title';
+		$result = $db->sql_query($sql);
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$template->assign_block_vars('category', array(
+				'VIDEO_CAT_TITLE'	=> $row['video_cat_title'],
+				'U_EDIT'			=> $this->u_action . '&amp;action=edit&amp;id=' .$row['video_cat_id'],
+				'U_DEL'				=> $this->u_action . '&amp;action=delete&amp;id=' .$row['video_cat_id'],
+			));
+		}
+		$db->sql_freeresult($result);
 
-					));
-				}
-				$db->sql_freeresult($result);
+		$template->assign_vars(array(
+			'U_ACTION'		=> $form_action,
+			'L_MODE_TITLE'	=> $lang_mode,
+		));
+		break;
 
-				$template->assign_vars(array(
-					'U_ACTION'		=> $form_action,
-					'L_MODE_TITLE'	=> $lang_mode,
-					));
-			break;
-
-			default:
-				trigger_error('NO_MODE', E_USER_ERROR);
-			break;
+		default:
+			trigger_error('NO_MODE', E_USER_ERROR);
+		break;
 		}
 	}
 }
-
 ?>

@@ -5,12 +5,6 @@ h3.center {
 	text-align: center;
 }
 
-.video_item {
-	float: left;
-	margin-right: 14px;
-	width: 400px;
-}
-
 .video_item .content{
 	font-size: 1.1em;
 }
@@ -26,7 +20,6 @@ h3.center {
 }
 
 .video-icon span	{ background: url("{T_IMAGESET_LANG_PATH}/button_video_new.gif") 0 0 no-repeat; }
-
 .buttons div.video-icon		{ width: 96px; height: 25px; }
 
 .rtl .icon-videos {
@@ -42,4 +35,3 @@ h3.center {
 }
 
 .icon-videos		{ background-image: url("{T_THEME_PATH}/images/icon_videos.gif"); }
-
